@@ -15,7 +15,9 @@
         <a href="#home" class="nav-link">Home</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#services" class="nav-link">Services</a>
-        <a href="#work" class="nav-link">Work</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#work" class="nav-link">Portfolio</a>
+        <a href="#testimonials" class="nav-link">Testimonials</a>
         <a href="#contact" class="nav-link btn-ghost">Contact</a>
       </nav>
 
@@ -33,6 +35,14 @@
 
   <main>
     <section id="home" class="hero">
+      <!-- Video background -->
+      <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+        <source src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+        <!-- Fallback image handled by CSS / hero-card -->
+      </video>
+
+      <div class="hero-overlay" aria-hidden="true"></div>
+
       <div class="container hero-grid">
         <div class="hero-text">
           <p class="eyebrow">We build beautiful products</p>
@@ -71,7 +81,6 @@
           </div>
         </div>
       </div>
-      <div class="hero-bg-shape" aria-hidden="true"></div>
     </section>
 
     <section id="about" class="section about reveal">
@@ -116,6 +125,48 @@
       </div>
     </section>
 
+    <!-- Pricing -->
+    <section id="pricing" class="section pricing reveal">
+      <div class="container">
+        <h2 class="center">Pricing</h2>
+        <p class="center muted">Simple, transparent pricing for teams of any size.</p>
+        <div class="grid pricing-grid">
+          <div class="price-card elevation">
+            <h3>Starter</h3>
+            <p class="price">$499</p>
+            <ul>
+              <li>Design audit</li>
+              <li>1 landing page</li>
+              <li>Email support</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Choose Starter</a>
+          </div>
+
+          <div class="price-card elevation featured">
+            <h3>Pro</h3>
+            <p class="price">$1,499</p>
+            <ul>
+              <li>Design + development</li>
+              <li>Up to 5 pages</li>
+              <li>Performance tuning</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Choose Pro</a>
+          </div>
+
+          <div class="price-card elevation">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <ul>
+              <li>Custom solutions</li>
+              <li>Priority support</li>
+              <li>Team training</li>
+            </ul>
+            <a class="btn btn-outline" href="#contact">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="work" class="section work reveal">
       <div class="container">
         <h2 class="center">Selected Work</h2>
@@ -147,10 +198,37 @@
       </div>
     </section>
 
+    <!-- Testimonials carousel -->
+    <section id="testimonials" class="section testimonials reveal">
+      <div class="container">
+        <h2 class="center">Testimonials</h2>
+        <div class="carousel" aria-roledescription="carousel">
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <div class="carousel-track">
+            <blockquote class="testimonial active">
+              <p>"Working with MyBrand transformed our website. Faster, clearer, and conversion went up."</p>
+              <cite>— Alex Chen, CEO, BrightApp</cite>
+            </blockquote>
+
+            <blockquote class="testimonial">
+              <p>"The team shipped on time and helped us think through accessibility and performance tradeoffs."</p>
+              <cite>— Maria Gomez, Product Lead</cite>
+            </blockquote>
+
+            <blockquote class="testimonial">
+              <p>"Great communication and a modern design system we still use daily."</p>
+              <cite>— Samir Patel, CTO, FlowWorks</cite>
+            </blockquote>
+          </div>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+        </div>
+      </div>
+    </section>
+
     <section id="contact" class="section contact reveal">
       <div class="container">
         <h2 class="center">Get in touch</h2>
-        <form class="contact-form" action="#" novalidate>
+        <form id="contact-form" class="contact-form" action="#" novalidate>
           <div class="field-row">
             <input type="text" name="name" placeholder="Your name" required />
             <input type="email" name="email" placeholder="Email" required />
@@ -160,6 +238,7 @@
             <button class="btn btn-primary" type="submit">Send message</button>
             <button class="btn btn-ghost" type="reset">Reset</button>
           </div>
+          <div id="form-status" aria-live="polite" class="form-status"></div>
         </form>
       </div>
     </section>

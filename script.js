@@ -1,4 +1,4 @@
-// Mobile nav toggle + smooth scroll + scroll reveal + theme + counters
+// Mobile nav toggle + smooth scroll + scroll reveal + theme + counters + carousel + contact submit
 (function(){
   const doc = document.documentElement;
   const header = document.querySelector('.site-header');
@@ -6,13 +6,16 @@
   const nav = document.getElementById('primary-nav');
   const links = document.querySelectorAll('.nav-link');
   const themeBtn = document.getElementById('theme-toggle');
+  const video = document.querySelector('.hero-video');
 
   // Mobile nav
-  toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    header.classList.toggle('nav-open');
-  });
+  if(toggle){
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      header.classList.toggle('nav-open');
+    });
+  }
 
   // Close mobile nav when link clicked (if open)
   links.forEach(l => l.addEventListener('click', () => {
@@ -115,6 +118,62 @@
     // fallback: set final values
     counters.forEach(c=> c.textContent = c.getAttribute('data-target'));
   }
+
+  // Testimonials carousel
+  (function carousel(){
+    const track = document.querySelector('.carousel-track');
+    if(!track) return;
+    const items = Array.from(track.querySelectorAll('.testimonial'));
+    const prev = document.querySelector('.carousel-btn.prev');
+    const next = document.querySelector('.carousel-btn.next');
+    let idx = items.findIndex(i=> i.classList.contains('active'));
+    if(idx === -1) idx = 0;
+
+    function show(i){
+      items.forEach((it, n)=>{
+        it.classList.toggle('active', n === i);
+      });
+    }
+
+    prev.addEventListener('click', ()=>{ idx = (idx - 1 + items.length) % items.length; show(idx); });
+    next.addEventListener('click', ()=>{ idx = (idx + 1) % items.length; show(idx); });
+
+    let timer = setInterval(()=>{ idx = (idx + 1) % items.length; show(idx); }, 6000);
+    [prev,next, track].forEach(el => el.addEventListener('mouseenter', ()=> clearInterval(timer)));
+    [prev,next, track].forEach(el => el.addEventListener('mouseleave', ()=> timer = setInterval(()=>{ idx = (idx + 1) % items.length; show(idx); }, 6000)));
+  })();
+
+  // Contact form submission (POST to /api/contact)
+  const form = document.getElementById('contact-form');
+  const statusEl = document.getElementById('form-status');
+  if(form){
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(form);
+      const body = { name: fd.get('name'), email: fd.get('email'), message: fd.get('message') };
+      statusEl.textContent = 'Sending…';
+      try{
+        const res = await fetch('/api/contact', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+        });
+        if(res.ok){
+          statusEl.textContent = 'Thanks — your message has been sent.';
+          form.reset();
+        } else {
+          const json = await res.json().catch(()=>null);
+          statusEl.textContent = json && json.error ? json.error : 'There was a problem sending your message.';
+        }
+      }catch(err){
+        statusEl.textContent = 'Network error — try again later.';
+      }
+    });
+  }
+
+  // Pause video if user prefers reduced motion
+  try{
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq && mq.matches && video){ video.pause(); video.style.display = 'none'; }
+  }catch(e){}
 
   // Tiny accessibility: dismiss mobile nav on Escape
   document.addEventListener('keydown', (e) => {
